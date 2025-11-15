@@ -23,6 +23,21 @@
     5- 8 Mb
     6- 2 Mb
 */
+// Create a new list? in case memory is full
+// Create a list of ALL PCBs
+// Create a list of ready PCBs
+// Create a list of wait PCBs
+// Create variable of running PCB
+
+// Manually add init trace/program to ready queue
+// this program may then exec/fork to other programs which will appear in a file
+// Input file:
+// Pid   Memory size  Arrival Time  Total CPU Time  I/O Frequency  I/O Duration
+// 0        10              0           10              0               0           init
+// 1        15              20          9               2               150         prog1
+//
+// output file:
+// Time of transition   Pid   Old State  New State
 
 struct memory_partition_t {
     const unsigned int partition_number;
@@ -37,7 +52,7 @@ struct memory_partition_t {
 // ENTIRE 100mb of user space
 // Note these are in descending order
 memory_partition_t memory[] = {
-    memory_partition_t(1, 40, "empty"),
+    memory_partition_t(1, 40, "empty"), // INSTEAD OF STRING, LETS USE PCB STRUCT/OBJ
     memory_partition_t(2, 25, "empty"),
     memory_partition_t(3, 15, "empty"),
     memory_partition_t(4, 10, "empty"),
@@ -61,6 +76,9 @@ struct PCB{
     // should share the same memory as parent
     // -1 if none yet
     int             partition_number;
+
+    int             remaining_cpu_time;
+    int             remaining_time_until_next_io;
 
     PCB(unsigned int _pid, int _ppid, std::string _pn, unsigned int _size, int _part_num):
         PID(_pid), PPID(_ppid), program_name(_pn), size(_size), partition_number(_part_num) {}
