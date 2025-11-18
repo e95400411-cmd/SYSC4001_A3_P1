@@ -28,6 +28,7 @@
 // Create a list of ready PCBs
 // Create a list of wait PCBs
 // Create variable of running PCB
+// milliseconds
 
 // Manually add init trace/program to ready queue
 // this program may then exec/fork to other programs which will appear in a file
@@ -52,7 +53,7 @@ struct memory_partition_t {
 // ENTIRE 100mb of user space
 // Note these are in descending order
 memory_partition_t memory[] = {
-    memory_partition_t(1, 40, "empty"), // INSTEAD OF STRING, LETS USE PCB STRUCT/OBJ
+    memory_partition_t(1, 40, "empty"),
     memory_partition_t(2, 25, "empty"),
     memory_partition_t(3, 15, "empty"),
     memory_partition_t(4, 10, "empty"),
