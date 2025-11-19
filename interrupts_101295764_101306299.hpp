@@ -33,9 +33,9 @@
 // Manually add init trace/program to ready queue
 // this program may then exec/fork to other programs which will appear in a file
 // Input file:
-// Pid   Memory size  Arrival Time  Total CPU Time  I/O Frequency  I/O Duration
-// 0        10              0           10              0               0           init
-// 1        15              20          9               2               150         prog1
+// Pid   Memory size  Arrival Time  Total CPU Time  I/O Frequency  I/O Duration     priority
+// 0        10              0           10              0               0           1
+// 1        15              20          9               2               150         2
 //
 // output file:
 // Time of transition   Pid   Old State  New State
@@ -63,7 +63,6 @@ memory_partition_t memory[] = {
 
 
 // Every process has a PCB
-// Fork I think should create a new PCB for instance
 struct PCB{
     unsigned int    PID;
 
@@ -74,12 +73,13 @@ struct PCB{
     std::string     program_name;
     unsigned int    size;
 
-    // should share the same memory as parent
     // -1 if none yet
     int             partition_number;
 
+    // ADDED FOR ASSIGNMENT 3
     int             remaining_cpu_time;
     int             remaining_time_until_next_io;
+    int             priority;
 
     PCB(unsigned int _pid, int _ppid, std::string _pn, unsigned int _size, int _part_num):
         PID(_pid), PPID(_ppid), program_name(_pn), size(_size), partition_number(_part_num) {}
@@ -387,8 +387,14 @@ unsigned int get_size(std::string name, std::vector<external_file> external_file
     return size;
 }
 
+// Just creating an output string for our execution. MAY NOT NEED ANBYMORE /NEED TO CHANGE********************************************************
 std::string createOutputString( int& totalTime,
                                 int delay,
                                 std::string msg);
+
+
+
+int RRNextPID(std::vector<int> ready);
+int PriorNextPID(std::vector<int> ready);
 
 #endif
